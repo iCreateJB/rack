@@ -21,29 +21,63 @@ type Router struct {
 	Server     *Server
 }
 
+type Route struct {
+	*mux.Route
+	Router *Router
+}
+
+func (r Route) Subrouter(prefix string, fn func(Router)) {
+	fn(Router{
+		Parent: r.Router,
+		Router: r.PathPrefix(prefix).Subrouter(),
+		Server: r.Router.Server,
+	})
+}
+
+func (rt *Router) MatcherFunc(fn mux.MatcherFunc) Route {
+	return Route{
+		Route:  rt.Router.MatcherFunc(fn),
+		Router: rt,
+	}
+}
+
 func (rt *Router) Redirect(method, path string, code int, target string) {
 	rt.Handle(path, Redirect(code, target)).Methods(method)
 }
 
-func (rt *Router) Route(method, path string, fn HandlerFunc) {
+func (rt *Router) Route(method, path string, fn HandlerFunc) Route {
 	switch method {
 	case "SOCKET":
-		rt.Handle(path, rt.websocket(fn)).Methods("GET").Headers("Upgrade", "websocket")
+		return Route{
+			Route:  rt.Handle(path, rt.websocket(fn)).Methods("GET").Headers("Upgrade", "websocket"),
+			Router: rt,
+		}
+	case "ANY":
+		return Route{
+			Route:  rt.Handle(path, rt.http(fn)),
+			Router: rt,
+		}
 	default:
-		rt.Handle(path, rt.http(fn)).Methods(method)
+		return Route{
+			Route:  rt.Handle(path, rt.http(fn)).Methods(method),
+			Router: rt,
+		}
 	}
 }
 
-func (rt *Router) Static(prefix, path string) {
-	rt.PathPrefix(prefix).Handler(http.StripPrefix(prefix, http.FileServer(http.Dir(path))))
+func (rt *Router) Static(prefix, path string) Route {
+	return Route{
+		Route:  rt.PathPrefix(prefix).Handler(http.StripPrefix(prefix, http.FileServer(http.Dir(path)))),
+		Router: rt,
+	}
 }
 
-func (r *Router) Subrouter(prefix string) Router {
-	return Router{
+func (r *Router) Subrouter(prefix string, fn func(Router)) {
+	fn(Router{
 		Parent: r,
 		Router: r.PathPrefix(prefix).Subrouter(),
 		Server: r.Server,
-	}
+	})
 }
 
 func (rt *Router) Use(mw Middleware) {

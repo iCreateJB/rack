@@ -144,6 +144,14 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:2341eb519bac5d661f5f97eba2ef94c95743a260cb58e88692c5457addb2f477"
+  name = "github.com/convox/hid"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "c67381b7ffffd69e6cf916c11a72acc93ecb3c0b"
+
+[[projects]]
+  branch = "master"
   digest = "1:96b22063c223a2871baab21201a63e40bafac55072d94baeab15ce549fdb84c2"
   name = "github.com/convox/inotify"
   packages = ["."]
@@ -160,11 +168,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f7b06ef3e77a63cb9c7f2eae3d402fd2547c074f08b95af95726246639456153"
+  digest = "1:c8a2adcf146c877e5d4c40dff18b75134e0f7c08fe02c39e10f198f3410b0161"
   name = "github.com/convox/stdapi"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "056b58bedecdf9d4eac92d44f4d3ba489d59d184"
+  revision = "d878e7ff24684d25f94cd15fa65ce071972fb7f5"
 
 [[projects]]
   branch = "master"
@@ -176,11 +184,22 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:86ee1fcd2d6ba5b4801c37d1a2b871adedff093f32a25ea04999425f67aa3fc4"
+  digest = "1:fc782b643f850e5d197dcaa8a4dd9b4e272883ccbfaffcbccd3fe66bb6241dc9"
   name = "github.com/convox/stdsdk"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "e633306a9d4c7ce972eeccdd952e7be33715a933"
+  revision = "1510063d454cf7fc16260bbb326435b5c076377e"
+
+[[projects]]
+  branch = "master"
+  digest = "1:9b7c37f737b12a6401a6c16f5a06cfb68709fc60df1c154260d4bb0f9ce250b0"
+  name = "github.com/convox/u2f"
+  packages = [
+    "u2fhid",
+    "u2ftoken",
+  ]
+  pruneopts = "NUT"
+  revision = "a734041427264f5a7d229a2e4c57cf75cb586d93"
 
 [[projects]]
   branch = "master"
@@ -621,10 +640,13 @@
     "github.com/boltdb/bolt",
     "github.com/convox/changes",
     "github.com/convox/exec",
+    "github.com/convox/hid",
     "github.com/convox/logger",
     "github.com/convox/stdapi",
     "github.com/convox/stdcli",
     "github.com/convox/stdsdk",
+    "github.com/convox/u2f/u2fhid",
+    "github.com/convox/u2f/u2ftoken",
     "github.com/convox/version",
     "github.com/docker/docker/builder/dockerignore",
     "github.com/docker/docker/pkg/archive",
